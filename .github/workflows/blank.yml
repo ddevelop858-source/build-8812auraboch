@@ -1,0 +1,23 @@
+name: Build WiFi Driver
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Driver
+        uses: actions/checkout@v3
+        with:
+          repository: morrownr/8812au-20210820
+          path: driver
+
+      - name: Download Kernel Source
+        run: |
+          # СЮДА НУЖНА ССЫЛКА НА ИСХОДНИКИ ТВОЕГО ЯДРА
+          # Пример: git clone --depth=1 https://github.com/ИМЯ/android_kernel_... kernel
+          echo "Ожидаю ссылку на Kernel Source..."
+
+      - name: Build Driver
+        run: |
+          echo "Начинаем компиляцию..."
+          # Здесь будут команды make, которые соберут файл .ko
