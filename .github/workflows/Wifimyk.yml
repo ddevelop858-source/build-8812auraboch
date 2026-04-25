@@ -1,0 +1,26 @@
+name: Build Driver
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Dependencies
+        run: sudo apt update && sudo apt install -y build-essential gcc-aarch64-linux-gnu bison flex libssl-dev bc
+        
+      - name: Get Kernel Source
+        run: |
+          git clone --depth=1 https://github.com/LowTension/android_kernel_xiaomi_sm8475 kernel
+          
+      - name: Get Driver
+        run: |
+          git clone --depth=1 https://github.com/morrownr/8812au-20210820 driver
+          cd driver
+          # Собираем модуль
+          make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KSRC=../kernel
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: 8812au-driver
+          path: driver/8812au.ko
