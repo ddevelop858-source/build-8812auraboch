@@ -5,22 +5,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Dependencies
-        run: sudo apt-get update && sudo apt-get install -y build-essential gcc-aarch64-linux-gnu
-      
-      - name: Get Kernel Source
+      - name: Dependencies
+        run: sudo apt install -y build-essential gcc-aarch64-linux-gnu
+      - name: Kernel
         run: git clone --depth=1 https://github.com/LowTension/android_kernel_xiaomi_sm8475 kernel
-      
-      - name: Get Driver
+      - name: Driver
         run: git clone --depth=1 https://github.com/morrownr/8812au-20210820 driver
-      
-      - name: Build Module
+      - name: Compile
         run: |
           cd driver
           make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KSRC=$(pwd)/../kernel
-      
-      - name: Upload Artifact
+      - name: Save
         uses: actions/upload-artifact@v3
         with:
-          name: 8812au-driver
+          name: 8812au-ko
           path: driver/8812au.ko
